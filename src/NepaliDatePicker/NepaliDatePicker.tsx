@@ -1,16 +1,15 @@
 import { ADToBS } from "bikram-sambat-js"
-import React, { FunctionComponent, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
+import React, { FunctionComponent, useCallback, useEffect, useState } from "react"
 import { Calender } from "./Calender"
 import { useConfig } from "./Config"
 import { useTrans } from "./Locale"
 import { ENGLISH, INepaliDatePicker, localeType, NepaliDatepickerEvents } from "./Types"
-import { childOf, executionDelegation, stitchDate } from "./Utils/common"
+import { executionDelegation, stitchDate } from "./Utils/common"
+import Tippy from "@tippyjs/react"
+import "tippy.js/dist/tippy.css"
 
 const NepaliDatePicker: FunctionComponent<INepaliDatePicker> = (props) => {
-    const { className, inputClassName, value, onChange, onSelect, options } = props
-
-    const nepaliDatePickerWrapper = useRef<HTMLDivElement>(null)
-    const nepaliDatePickerInput = useRef<HTMLInputElement>(null)
+    const { value, onChange, onSelect, options, pickerPlacement, ...other } = props
 
     const [date, setDate] = useState<string>("")
     const [showCalendar, setShowCalendar] = useState<boolean>(false)
@@ -30,44 +29,6 @@ const NepaliDatePicker: FunctionComponent<INepaliDatePicker> = (props) => {
     useEffect(() => {
         setDate(toEnglish(value || ADToBS(new Date())))
     }, [value])
-
-    const handleClickOutside = useCallback((event: any) => {
-        if (nepaliDatePickerWrapper.current && childOf(event.target, nepaliDatePickerWrapper.current)) {
-            return
-        }
-
-        setShowCalendar(false)
-    }, [])
-
-    useLayoutEffect(() => {
-        if (showCalendar) {
-            document.addEventListener("mousedown", handleClickOutside)
-        }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside)
-        }
-    }, [showCalendar])
-
-    useLayoutEffect(() => {
-        if (showCalendar && nepaliDatePickerWrapper.current) {
-            const nepaliDatePicker = nepaliDatePickerWrapper.current.getBoundingClientRect()
-            const screenHeight = window.innerHeight
-
-            const calender: HTMLDivElement | null = nepaliDatePickerWrapper.current.querySelector(".calender")
-            if (calender) {
-                setTimeout(() => {
-                    const calenderHeight = calender.clientHeight
-
-                    if (calenderHeight + nepaliDatePicker.bottom > screenHeight) {
-                        if (calenderHeight < nepaliDatePicker.top) {
-                            calender.style.bottom = `${nepaliDatePicker.height}px`
-                        }
-                    }
-                }, 0)
-            }
-        }
-    }, [showCalendar])
 
     const handleOnChange = useCallback((changedDate: string) => {
         executionDelegation(
@@ -104,17 +65,26 @@ const NepaliDatePicker: FunctionComponent<INepaliDatePicker> = (props) => {
     }
 
     return (
-        <div ref={nepaliDatePickerWrapper} className={`nepali-date-picker ${className}`}>
+        <Tippy
+            onClickOutside={() => {
+                setShowCalendar(false)
+            }}
+            appendTo={() => document.body}
+            className='tippy-container'
+            visible={showCalendar}
+            arrow={false}
+            interactive
+            placement={pickerPlacement}
+            content={<Calender value={date} events={datepickerEvents} />}
+        >
             <input
+                {...other}
                 type='text'
-                ref={nepaliDatePickerInput}
-                className={inputClassName}
-                readOnly={true}
+                readOnly
                 value={numberTrans(date)}
                 onClick={() => setShowCalendar((visible) => !visible)}
             />
-            {showCalendar && date && <Calender value={date} events={datepickerEvents} />}
-        </div>
+        </Tippy>
     )
 }
 

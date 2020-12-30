@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react"
+import { Placement } from "tippy.js"
 
 export type voidFunction = () => void
 
@@ -17,8 +17,7 @@ export interface NepaliDatePickerOptions {
 
 export interface INepaliDatePicker {
     value: string
-    className: HTMLAttributes<HTMLDivElement>["className"]
-    inputClassName: HTMLAttributes<HTMLInputElement>["className"]
+    pickerPlacement: Placement
     onChange: (date: string) => void
     onSelect?: (value: string) => void
     options: NepaliDatePickerOptions
@@ -26,8 +25,7 @@ export interface INepaliDatePicker {
 
 export interface NepaliDatePickerProps {
     value?: INepaliDatePicker["value"]
-    className?: INepaliDatePicker["className"]
-    inputClassName?: INepaliDatePicker["inputClassName"]
+    pickerPlacement?: INepaliDatePicker["pickerPlacement"]
     onChange?: INepaliDatePicker["onChange"]
     onSelect?: INepaliDatePicker["onSelect"]
     options?: {

@@ -3,157 +3,204 @@ $secondary: #fff;
 $textColor: #8c8c8c;
 $text-disabled: #d8d8d8;
 
-.nepali-date-picker {
-    position: relative;
+.tippy-container {
+    background-color: transparent !important;
+}
 
-    .calender {
-        background: $secondary none repeat scroll 0 0;
-        // border: 1px solid darken($secondary, 20%);
-        border-radius: 6px;
-        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
-        box-sizing: border-box;
-        color: $textColor;
-        display: block;
-        font-family: NotoSans, sans-serif;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: normal;
-        height: auto;
-        letter-spacing: 0.2px;
-        line-height: 1.25em;
-        padding: 15px;
-        position: absolute;
-        text-align: right;
-        user-select: none;
-        left: 0;
-        z-index: 9999;
+.tippy-content {
+    padding: 0 !important;
+}
 
-        .calendar-controller {
-            align-items: center;
+.calender {
+    background: $secondary none repeat scroll 0 0;
+    // border: 1px solid darken($secondary, 20%);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
+    color: $textColor;
+    display: block;
+    width: max-content;
+    letter-spacing: 0.2px;
+    line-height: 1.25em;
+    padding: 16px;
+    text-align: right;
+    user-select: none;
+    z-index: 9999;
+
+    .calendar-controller {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+
+        .date-indicator {
             display: flex;
-            justify-content: space-between;
+        }
+
+        .control {
+            cursor: pointer;
+            position: relative;
+            text-align: center;
+            transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            &.icon {
+                width: 34px;
+                height: 34px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+            }
+
+            &.icon-today {
+                position: absolute;
+                right: 34px;
+            }
+
+            &.month {
+                border-radius: 32px 0 0 32px;
+            }
+
+            &.year {
+                border-radius: 0 32px 32px 0;
+                border-left: none;
+            }
+
+            &.month,
+            &.year {
+                border: 1px solid #ccc;
+                line-height: 24px;
+                width: 70px;
+
+                .current-month, .current-year {
+                    display: block;
+                    padding: 4px;
+                }
+            }
+
+            .drop-down {
+                width: 70px;
+                color: $textColor;
+                background-color: #fff;
+                padding: 8px 0;
+                box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
+                max-height: 200px;
+                overflow-y: scroll;
+                z-index: 100;
+                scrollbar-width: thin;
+                scrollbar-color: #acacac rgba(0, 0, 0, 0.1);
+
+                &::-webkit-scrollbar {
+                    width: 8px;
+                }
+
+                &::-webkit-scrollbar:horizontal {
+                    display: none;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: rgba(0, 0, 0, 0.1);
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    border-radius: 8px;
+                    background: #acacac;
+                }
+
+                &::-webkit-scrollbar-thumb:hover {
+                    background: #8c8c8c;
+                }
+
+                &.left {
+                    border-radius: 16px 0 0 16px;
+                }
+
+                &.right {
+                    direction: rtl;
+                    border-radius: 0 16px 16px 0;
+                }
+
+                ul {
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                li {
+                    padding: 6px 12px;
+                    transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+                    &:hover {
+                        background-color: rgba(0, 0, 0, 0.1);
+                    }
+
+                    &.active {
+                        background-color: $primary;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+
+    td.month-day {
+        &.current {
+            opacity: 1;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        &.disabled {
+            color: $text-disabled;
+        }
+
+        &.today {
+            color: #4a4a4a;
             position: relative;
 
-            .date-indicator {
-                display: flex;
-            }
-
-            .control {
-                cursor: pointer;
-                position: relative;
-                text-align: center;
-
-                &.icon-today {
-                    position: absolute;
-                    right: 20px;
-                }
-
-                &.month,
-                &.year {
-                    border: 1px solid #eee;
-                    line-height: 24px;
-                    width: 70px;
-
-                    .current-month, .current-year {
-                        display: block;
-                        padding: 4px;
-                    }
-                }
-
-                &.year {
-                    border-left: none;
-                }
-
-                .drop-down {
-                    background-color: #fff;
-                    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
-                    left: 0;
-                    max-height: 200px;
-                    overflow-y: scroll;
-                    position: absolute;
-                    top: 0;
-                    width: 100%;
-                    z-index: 100;
-
-                    ul {
-                        list-style: none;
-                        margin: 0;
-                        padding: 0;
-                    }
-
-                    li {
-                        padding: 4px 10px;
-
-                        &.active {
-                            background: $primary;
-                            color: #fff;
-                        }
-                    }
-                }
+            &::before {
+                background-color: $primary;
+                border-radius: 50%;
+                bottom: 6px;
+                content: "";
+                height: 4px;
+                left: 50%;
+                margin: auto;
+                position: absolute;
+                transform: translateX(-50%);
+                width: 4px;
             }
         }
 
-        td.month-day {
-            &.current {
-                opacity: 1;
-            }
-
-            &.disabled {
-                color: $text-disabled;
-            }
-
-            &.today {
-                color: #4a4a4a;
-                position: relative;
-
-                &::before {
-                    background-color: $primary;
-                    border-radius: 50%;
-                    bottom: 6px;
-                    content: "";
-                    height: 4px;
-                    left: 50%;
-                    margin: auto;
-                    position: absolute;
-                    transform: translateX(-50%);
-                    width: 4px;
-                }
-            }
-
-            &.selected {
-                color: #fff;
-                position: relative;
-
-                &::after {
-                    background: $primary;
-                    border-radius: 50%;
-                    content: "";
-                    height: 35px;
-                    left: 50%;
-                    position: absolute;
-                    top: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 35px;
-                    z-index: -1;
-                }
-            }
+        &.selected {
+            color: #fff;
+            background: $primary;
         }
+    }
 
-        table {
-            text-align: center;
-            width: 100%;
+    table {
+        text-align: center;
+        width: 100%;
+        border: none;
+        margin-top: 8px;
+
+        td {
+            height: 40px;
+            width: 40px;
             border: none;
+        }
 
-            td {
-                height: 40px;
-                width: 40px;
-                border: none;
-            }
-
-            tr {
-                border: none;
-                height: 36px;
-            }
+        tr {
+            border: none;
+            height: 36px;
         }
     }
 }

@@ -4,6 +4,7 @@ import { DropDown, OptionType } from "../../DropDown"
 import { useTrans } from "../../Locale"
 import { localeType, ParsedDate } from "../../Types"
 import { range } from "../../Utils/common"
+import Tippy from "@tippyjs/react"
 
 interface YearPickerProps {
     date: ParsedDate
@@ -44,10 +45,29 @@ const YearPicker: FunctionComponent<YearPickerProps> = ({ date, onSelect }) => {
 
     return (
         <div className='control year'>
-            <span className='current-year' onClick={() => setShowDropdown(!showDropdown)}>
-                {currentYear.label}
-            </span>
-            {showDropdown && <DropDown options={years} value={currentYear.value} onSelect={handleDropdownView} />}
+            <Tippy
+                onClickOutside={() => {
+                    setShowDropdown(false)
+                }}
+                className='tippy-container'
+                visible={showDropdown}
+                arrow={false}
+                interactive
+                placement={"bottom-end"}
+                offset={[1, -33]}
+                content={
+                    <DropDown
+                        className={"right"}
+                        options={years}
+                        value={currentYear.value}
+                        onSelect={handleDropdownView}
+                    />
+                }
+            >
+                <span className='current-year' onClick={() => setShowDropdown(!showDropdown)}>
+                    {currentYear.label}
+                </span>
+            </Tippy>
         </div>
     )
 }

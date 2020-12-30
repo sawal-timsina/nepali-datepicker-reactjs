@@ -2,6 +2,7 @@ import React, { FunctionComponent, useMemo, useState } from "react"
 import { CalenderData, useConfig } from "../../Config"
 import { DropDown, OptionType } from "../../DropDown"
 import { localeType, ParsedDate } from "../../Types"
+import Tippy from "@tippyjs/react"
 
 interface MonthPickerProps {
     date: ParsedDate
@@ -37,10 +38,29 @@ const MonthPicker: FunctionComponent<MonthPickerProps> = ({ date, onSelect }) =>
 
     return (
         <div className='control month'>
-            <span className='current-month' onClick={() => setShowDropdown(!showDropdown)}>
-                {currentMonth.label}
-            </span>
-            {showDropdown && <DropDown options={monthList} value={currentMonth.value} onSelect={handleDropdownView} />}
+            <Tippy
+                onClickOutside={() => {
+                    setShowDropdown(false)
+                }}
+                className='tippy-container'
+                visible={showDropdown}
+                arrow={false}
+                interactive
+                placement={"bottom-start"}
+                offset={[-1, -33]}
+                content={
+                    <DropDown
+                        className={"left"}
+                        options={monthList}
+                        value={currentMonth.value}
+                        onSelect={handleDropdownView}
+                    />
+                }
+            >
+                <span className='current-month' onClick={() => setShowDropdown(!showDropdown)}>
+                    {currentMonth.label}
+                </span>
+            </Tippy>
         </div>
     )
 }

@@ -23,8 +23,6 @@ const NepaliDatePickerWrapper: FunctionComponent<NepaliDatePickerProps> = (props
 }
 
 NepaliDatePickerWrapper.defaultProps = {
-    className: "",
-    inputClassName: "",
     value: "",
     onChange: () => null,
     onSelect: () => null,

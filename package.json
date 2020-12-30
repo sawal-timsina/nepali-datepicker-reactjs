@@ -91,7 +91,8 @@
         "stylelint-no-unsupported-browser-features": "^4.0.0",
         "stylelint-order": "^4.1.0",
         "stylelint-scss": "^3.18.0",
-        "typescript": "^3.7.5"
+        "typescript": "^3.7.5",
+        "@tippyjs/react": "^4.2.0"
     },
     "files": [
         "dist",
